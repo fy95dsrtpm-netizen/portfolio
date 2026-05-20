@@ -1,3 +1,51 @@
+@font-face {
+  font-family: "Inter";
+  src: url("assets/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("assets/fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("assets/fonts/Inter-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("assets/fonts/Inter-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter Display";
+  src: url("assets/fonts/InterDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter Display";
+  src: url("assets/fonts/InterDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --ink: #111111;
   --muted: #6d6d6d;
@@ -5,8 +53,8 @@
   --soft: #f5f5f2;
   --line: #d8d8d2;
   --accent: #d71920;
-  --body: Arial, Helvetica, sans-serif;
-  --serif: Georgia, "Times New Roman", serif;
+  --body: "Inter", Arial, Helvetica, sans-serif;
+  --serif: "Inter Display", "Inter", Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -138,6 +186,13 @@ h1 {
   margin-left: auto;
 }
 
+.profile-photo-card a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  outline-offset: 6px;
+}
+
 .profile-photo-card img {
   aspect-ratio: 1 / 1.25;
   object-fit: cover;
@@ -145,6 +200,13 @@ h1 {
   background: var(--soft);
   border: 1px solid var(--line);
   filter: grayscale(100%) contrast(1.04);
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.profile-photo-card a:hover img,
+.profile-photo-card a:focus-visible img {
+  filter: grayscale(100%) contrast(1.08);
+  opacity: 0.88;
 }
 
 .profile-photo-card span {
@@ -341,10 +403,106 @@ h2 {
   aspect-ratio: 4 / 3;
   margin-bottom: 13px;
   object-fit: cover;
+  cursor: zoom-in;
+  transition: opacity 180ms ease, filter 180ms ease;
+}
+
+.work-grid img:hover,
+.work-grid img:focus-visible {
+  filter: contrast(1.05);
+  opacity: 0.86;
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
 }
 
 .work-grid h3 {
   font-size: clamp(1.12rem, 2vw, 1.7rem);
+}
+
+.lightbox-open {
+  overflow: hidden;
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 58px;
+  align-items: center;
+  gap: clamp(10px, 2vw, 24px);
+  padding: clamp(18px, 3vw, 42px);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.photo-lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-frame {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  min-width: 0;
+}
+
+.lightbox-frame img {
+  width: auto;
+  max-width: 100%;
+  max-height: min(76vh, 820px);
+  margin: 0 auto;
+  object-fit: contain;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.14);
+}
+
+.lightbox-frame figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lightbox-frame strong {
+  color: var(--ink);
+}
+
+.photo-lightbox button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.photo-lightbox button:hover,
+.photo-lightbox button:focus-visible {
+  color: var(--accent);
+  border-color: var(--ink);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: clamp(12px, 2vw, 24px);
+  right: clamp(12px, 2vw, 24px);
+}
+
+.lightbox-prev {
+  justify-self: end;
+}
+
+.lightbox-next {
+  justify-self: start;
 }
 
 .contact {
@@ -478,6 +636,28 @@ h2 {
 
   .image-strip img {
     height: 260px;
+  }
+
+  .photo-lightbox {
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
+    padding-top: 72px;
+  }
+
+  .lightbox-frame {
+    grid-column: 1 / -1;
+  }
+
+  .lightbox-frame img {
+    max-height: 68vh;
+  }
+
+  .lightbox-prev {
+    justify-self: end;
+  }
+
+  .lightbox-next {
+    justify-self: start;
   }
 
   .site-footer {
